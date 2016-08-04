@@ -146,7 +146,6 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
      * @param context The authentication context
      * @return Token2 userId value
      */
-
     private String getUserId(AuthenticationContext context) throws AuthenticationFailedException {
         String userId = null;
         String username = getUsername(context);
