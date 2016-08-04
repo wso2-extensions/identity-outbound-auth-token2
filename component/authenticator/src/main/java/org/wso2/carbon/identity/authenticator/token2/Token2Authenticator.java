@@ -45,6 +45,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +131,7 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
             String validation = String.valueOf(userClaims.get(Token2Constants.VALIDATION));
             if (validation.equals("true")) {
                 context.setSubject(AuthenticatedUser
-                            .createLocalAuthenticatedUserFromSubjectIdentifier("an authorised user"));
+                        .createLocalAuthenticatedUserFromSubjectIdentifier("an authorised user"));
             } else {
                 throw new AuthenticationFailedException("Given hardware token has been expired or is not a valid token");
             }
@@ -140,9 +142,9 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
 
     /**
      * Get the Token2 user id
+     *
      * @param context The authentication context
      * @return Token2 userId value
-     *
      */
 
     private String getUserId(AuthenticationContext context) throws AuthenticationFailedException {
@@ -157,7 +159,7 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
                             .getUserClaimValue(username, Token2Constants.USERID_CLAIM, null);
                 } catch (UserStoreException e) {
                     throw new AuthenticationFailedException("Cannot find the user claim for userId " + e.getMessage(),
-                                e);
+                            e);
                 }
             }
         }
@@ -169,17 +171,18 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
 
     /**
      * Check the validation of the Token2 hardware token whether the token is valid or not
-     * @param url Token2 validation endpoint
+     *
+     * @param url    Token2 validation endpoint
      * @param apiKey Token2 ApiKey
      * @param userId Token2 userId
      * @param format Token2 response format
-     * @param token Token2 hardware token
+     * @param token  Token2 hardware token
      * @return the response
-     *
      */
     private String validateToken(String url, String apiKey, String userId, String format, String token)
             throws AuthenticationFailedException {
-        BufferedReader in =  null;
+        BufferedReader in = null;
+        HttpURLConnection urlConnection = null;
         StringBuilder builder;
         if (log.isDebugEnabled()) {
             log.debug("Token validation URL: " + url);
@@ -192,7 +195,7 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
                         Token2Constants.TOKEN + Token2Constants.EQUAL + token + Token2Constants.AMPERSAND +
                         Token2Constants.USER_ID + Token2Constants.EQUAL + userId + Token2Constants.AMPERSAND +
                         Token2Constants.FORMAT + Token2Constants.EQUAL + format);
-                HttpURLConnection urlConnection = (HttpURLConnection) obj.openConnection();
+                urlConnection = (HttpURLConnection) obj.openConnection();
                 urlConnection.setRequestMethod(Token2Constants.GET_METHOD);
                 in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                 builder = new StringBuilder();
@@ -204,9 +207,12 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
                 if (log.isDebugEnabled()) {
                     log.debug("response: " + builder.toString());
                 }
+            } catch (MalformedURLException e) {
+                throw new AuthenticationFailedException("Invalid URL", e);
+            } catch (ProtocolException e) {
+                throw new AuthenticationFailedException("Error while setting the HTTP request method", e);
             } catch (IOException e) {
-                throw new AuthenticationFailedException("Error while sending the HTTP request to validate the token" +
-                        e.getMessage(), e);
+                throw new AuthenticationFailedException("Error in I/O Streams" + e.getMessage(), e);
             } finally {
                 try {
                     if (in != null) {
@@ -214,6 +220,9 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
                     }
                 } catch (IOException e) {
                     log.error("Couldn't close the I/O Streams", e);
+                }
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
                 }
             }
             return builder.toString();
@@ -275,3 +284,4 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
         return configProperties;
     }
 }
+
