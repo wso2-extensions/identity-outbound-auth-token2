@@ -54,6 +54,7 @@ import java.util.Map;
 
 /**
  * Authenticator of Token2
+ * @since 1.0.1
  */
 public class Token2Authenticator extends AbstractApplicationAuthenticator implements FederatedApplicationAuthenticator {
 
@@ -268,14 +269,14 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
 
         Property apiKey = new Property();
         apiKey.setName(Token2Constants.APIKEY);
-        apiKey.setDisplayName("Api Key");
+        apiKey.setDisplayName(Token2Constants.TOKEN2_APIKEY);
         apiKey.setRequired(true);
-        apiKey.setDescription("Enter Token2 API Key value");
+        apiKey.setDescription("Enter Token2 API Key value.");
         apiKey.setDisplayOrder(1);
         configProperties.add(apiKey);
 
         Property callbackUrl = new Property();
-        callbackUrl.setDisplayName("Callback URL");
+        callbackUrl.setDisplayName(Token2Constants.TOKEN2_CALLBACK_URL);
         callbackUrl.setName(IdentityApplicationConstants.OAuth2.CALLBACK_URL);
         callbackUrl.setDescription("Enter value corresponding to callback url.");
         callbackUrl.setDisplayOrder(2);
@@ -283,4 +284,3 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
         return configProperties;
     }
 }
-

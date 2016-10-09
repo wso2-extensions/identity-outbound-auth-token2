@@ -24,6 +24,8 @@ public class Token2Constants {
     public static final String AUTHENTICATOR_FRIENDLY_NAME = "Token2Authenticator";
     public static final String CODE = "code";
     public static final String APIKEY = "apiKey";
+    public static final String TOKEN2_APIKEY = "Api Key";
+    public static final String TOKEN2_CALLBACK_URL = "Callback URL";
     public static final String API = "api";
     public static final String JSON_FORMAT = "1";
     public static final String TOKEN = "token";
@@ -37,5 +39,4 @@ public class Token2Constants {
     public static final String LOGIN_PAGE = "token2authenticationendpoint/token2.jsp";
     public static final String RETRY_PARAMS = "&authFailure=true&authFailureMsg=login.fail.message";
     public static final String TOKEN2_VALIDATE_ENDPOINT = "https://api.token2.com/validate?";
-
 }
