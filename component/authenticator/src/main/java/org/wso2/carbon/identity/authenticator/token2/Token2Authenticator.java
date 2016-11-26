@@ -150,7 +150,7 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
     private String getUserId(AuthenticationContext context) throws AuthenticationFailedException {
         String userId = null;
         String username = getUsername(context);
-        if (username != null) {
+        if (StringUtils.isNotEmpty(username)) {
             UserRealm userRealm = getUserRealm(username);
             username = MultitenantUtils.getTenantAwareUsername(String.valueOf(username));
             if (userRealm != null) {
@@ -200,7 +200,7 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
                 in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
                 builder = new StringBuilder();
                 String inputLine = in.readLine();
-                while (inputLine != null) {
+                while (StringUtils.isNotEmpty(inputLine)) {
                     builder.append(inputLine).append("\n");
                     inputLine = in.readLine();
                 }
