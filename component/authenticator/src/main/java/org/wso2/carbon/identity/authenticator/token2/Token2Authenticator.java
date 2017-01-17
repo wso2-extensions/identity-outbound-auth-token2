@@ -106,7 +106,7 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
             retryParam = Token2Constants.RETRY_PARAMS;
         }
         try {
-            response.sendRedirect(response.encodeRedirectURL(loginPage + ("?" + queryParams)) + "&authenticators="
+            response.sendRedirect(loginPage + ("?" + queryParams) + "&authenticators="
                     + getName() + retryParam);
         } catch (IOException e) {
             throw new AuthenticationFailedException("Authentication failed!", e);
