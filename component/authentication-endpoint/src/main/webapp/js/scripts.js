@@ -31,8 +31,7 @@ $(document).ready(function(){
 			if(error == ""){
 				$('#errorMsg').hide('slow');
 				$('#loginForm').submit();
-				
-			}else{				
+			}else{
 				$('#errorMsg').html(error).show('slow');
 			}
 	});
