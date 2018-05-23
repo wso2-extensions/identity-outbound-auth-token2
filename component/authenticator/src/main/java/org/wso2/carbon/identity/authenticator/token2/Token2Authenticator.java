@@ -154,8 +154,9 @@ public class Token2Authenticator extends AbstractApplicationAuthenticator implem
             username = MultitenantUtils.getTenantAwareUsername(String.valueOf(username));
             if (userRealm != null) {
                 try {
-                    userId = userRealm.getUserStoreManager()
-                            .getUserClaimValue(username, Token2Constants.USERID_CLAIM, null);
+                    Map<String, String> userClaimValues = userRealm.getUserStoreManager()
+                            .getUserClaimValues(username, new String[]{Token2Constants.USERID_CLAIM}, null);
+                    userId = userClaimValues.get(Token2Constants.USERID_CLAIM);
                 } catch (UserStoreException e) {
                     throw new AuthenticationFailedException("Cannot find the user claim for userId " + e.getMessage(),
                             e);
