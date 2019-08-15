@@ -32,7 +32,7 @@ import java.util.Hashtable;
  */
 public class Token2AuthenticatorServiceComponent {
 
-    private static Log log = LogFactory.getLog(Token2AuthenticatorServiceComponent.class);
+    private static final Log log = LogFactory.getLog(Token2AuthenticatorServiceComponent.class);
     private static RealmService realmService;
 
     protected void activate(ComponentContext ctxt) {

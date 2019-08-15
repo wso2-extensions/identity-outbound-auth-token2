@@ -57,7 +57,7 @@ import java.util.Map;
  */
 public class Token2Authenticator extends AbstractApplicationAuthenticator implements FederatedApplicationAuthenticator {
 
-    private static Log log = LogFactory.getLog(Token2Authenticator.class);
+    private static final Log log = LogFactory.getLog(Token2Authenticator.class);
 
     /**
      * Get the friendly name of the Authenticator
